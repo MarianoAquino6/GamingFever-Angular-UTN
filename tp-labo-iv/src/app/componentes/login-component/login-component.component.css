@@ -1,0 +1,61 @@
+/* ESTILOS PARA INGRESAR*/
+
+.main-ingresar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.login-registro {
+    flex: 50%;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    margin-left: 40px;
+}
+
+.login {
+    display: flex;
+    flex-direction: column;
+}
+
+.login label, .login input {
+    display: block;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.login h3 {
+    margin-bottom: 10px;
+}
+
+.login label {
+    font-family: 'ubuntu';
+    color: white;
+}
+
+.login input,
+button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 40%;
+}
+
+.login a {
+    color: red;
+}
+
+.registro h3 {
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.imagen-ingresar {
+    display: flex;
+    flex: 50%;
+    background-image: url('../../../assets/img/terminator2.jpg');
+    background-size: cover;
+    background-position: center;
+    height: auto;
+    max-width: 100%;
+}

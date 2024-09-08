@@ -1,0 +1,47 @@
+/* ESTILOS PARA EL HOMEPAGE */
+
+.container-principal-home {
+    display: flex;
+    flex-direction: row;
+}
+
+.container-mayor-izquierda {
+    flex: 60%;
+    display: flex;
+}
+
+.container-mayor-izquierda img {
+    width: 100%;
+}
+
+.container-menor-derecha {
+    flex: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+.container-menor-derecha h3 {
+    font-size: 1.8rem;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.cuerpo-card,
+.cuerpo-card a {
+    background-image: url('../../../assets/img/card-bg.jpg');
+    color: white;
+    font-family: 'ubuntu';
+    text-decoration: none;
+}
+
+.card {
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}

@@ -1,0 +1,49 @@
+<section>
+    <div class="banner">
+        <h2>INGRESAR</h2>
+    </div>
+</section>
+
+<section>
+    <div class="main-ingresar">
+        <div class="login-registro">
+            <div class="login">
+                <h3>Ingresa a tu cuenta</h3>
+
+                <form id="login-form" onsubmit="return validarLogin()">
+                    <label for="username">USUARIO</label>
+                    <input type="text" id="username" name="username" required>
+                    <label for="password">CONTRASEÑA</label>
+                    <input type="password" id="password" name="password" required>
+                    <button type="submit" class="btn btn-danger">INGRESAR</button>
+                </form>
+
+                <p>
+                    <a href="#">Olvidé mi contraseña</a>
+                </p>
+
+            </div>
+
+            <div class="registro">
+                <h3>No tenes cuenta?</h3>
+                <button class="btn btn-danger mb-5">REGISTRARSE</button>
+            </div>
+
+            <section class="recuperar-contrasena" style="display: none;">
+                <div class="login">
+                    <h3>Recuperar Contrasenia</h3>
+                    <form>
+                        <label for="email-recuperar">CORREO ELECTRONICO</label>
+                        <input type="email" id="email-recuperar" class="form-control" required>
+                        <button type="submit" class="btn btn-danger">ENVIAR</button>
+                    </form>
+                    <p id="mensaje-recuperar"></p>
+                </div>
+            </section>
+        </div>
+
+        <div class="imagen-ingresar">
+            <img>
+        </div>
+    </div>
+</section>
