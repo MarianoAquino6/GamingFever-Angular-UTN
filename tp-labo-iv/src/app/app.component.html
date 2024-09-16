@@ -5,14 +5,24 @@
     </div>
 
     <ul class="nav-derecha">
-      <li routerLink="quien-soy" routerLinkActive="active-route">ACERCA DE</li>
-      <li routerLink="login" routerLinkActive="active-route">INGRESAR</li>
+      <li routerLink="quien-soy">ACERCA DE</li>
+
+      @if (usuarioLogueadoGeneral) 
+      {
+      <li class="username">USER: {{ usuarioLogueadoGeneral }}</li>
+      <li (click)="logout()" routerLink="home">LOG OUT</li>
+      }
+      @else 
+      {
+      <li routerLink="login">INGRESAR</li>
+      }
     </ul>
   </nav>
 </header>
 
 <main>
-  <router-outlet />
+  <!-- <app-login-component (onEnviarUserLogueado)="capturarUsuarioLogueado($event)"></app-login-component> -->
+  <router-outlet></router-outlet>
 </main>
 
 <footer>

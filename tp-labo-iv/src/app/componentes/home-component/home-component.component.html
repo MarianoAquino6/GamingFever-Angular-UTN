@@ -33,6 +33,44 @@
 </section>
 
 <section>
+    @if(usuarioLogueadoGeneral)
+    {
+    <div class="grid-inicio row gy-3 mt-3 mb-3">
+        <div class="col-md-3">
+            <div class="card">
+                <img src="assets/img/ahorcado.png" class="card-img-top">
+                <div class="card-body cuerpo-card">
+                    <h5 class="card-title text-center">AHORCADO</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <img src="assets/img/mayor-menor.png" class="card-img-top">
+                <div class="card-body cuerpo-card">
+                    <h5 class="card-title text-center">MAYOR O MENOR</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <img src="assets/img/preguntados.png" class="card-img-top">
+                <div class="card-body cuerpo-card">
+                    <h5 class="card-title text-center">PREGUNTADOS</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <img src="assets/img/name-song.png" class="card-img-top">
+                <div class="card-body cuerpo-card">
+                    <h5 class="card-title text-center">NAME THE SONG</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+    @else {
     <div class="grid-inicio row gy-3 mt-3 mb-3">
         <div class="col-md-3">
             <div class="card">
@@ -67,4 +105,5 @@
             </div>
         </div>
     </div>
+    }
 </section>

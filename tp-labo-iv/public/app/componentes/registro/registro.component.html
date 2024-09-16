@@ -1,0 +1,27 @@
+<section>
+    <div class="banner">
+        <h2>REGISTRO</h2>
+    </div>
+</section>
+
+<section>
+    <div class="main-ingresar">
+        <div class="registro-principal">
+            <div class="registro">
+                <h3>Registra tu nueva cuenta</h3>
+
+                <form id="registro-form">
+                    <label for="username">USUARIO</label>
+                    <input type="text" id="username" name="username" required [(ngModel)]="nuevoUsername">
+                    <label for="password">CONTRASEÑA</label>
+                    <input type="text" id="password" name="password" required [(ngModel)]="nuevaPass">
+                    <button type="submit" class="btn btn-danger" (click)="registrarUsuario()">REGISTRAR</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="imagen-ingresar">
+            <img src="assets/img/terminator.jpg" alt="terminator login">
+        </div>
+    </div>
+</section>

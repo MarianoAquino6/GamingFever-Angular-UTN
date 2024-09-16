@@ -1,0 +1,53 @@
+.main-ingresar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.registro-principal {
+    flex: 65%;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    margin-left: 40px;
+}
+
+.registro {
+    display: flex;
+    flex-direction: column;
+}
+
+.registro label, .registro input {
+    display: block;
+    width: 100%;
+}
+
+.registro h3 {
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+.registro label {
+    font-family: 'ubuntu';
+    color: white;
+}
+
+.registro input,
+button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 40%;
+}
+
+.imagen-ingresar {
+    flex: 35%; 
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+}
+
+.imagen-ingresar img {
+    max-width: 100%;
+    height: auto; 
+}
