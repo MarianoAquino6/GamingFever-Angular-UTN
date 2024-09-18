@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import Toastify from 'toastify-js';
 import 'toastify-js/src/toastify.css';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-registro',
@@ -20,7 +21,7 @@ export class RegistroComponent {
   usuarioLogeado: string = "";
   mensajeError: string = "";
 
-  constructor(public auth: Auth, private router: Router, private firestore: Firestore) {
+  constructor(public auth: Auth, private router: Router, private firestore: Firestore, private authService: AuthService) {
 
   }
 
@@ -38,6 +39,9 @@ export class RegistroComponent {
           duration: 3000
         }).showToast();
       }
+
+      // Le mando el nombre del usuario al metodo setUsuarioLogueado del AuthService
+      this.authService.setUsuarioLogueado(res.user.email);
 
       //GUARDO EL LOGIN DEL USUARIO EN UN LOGGER
       let col = collection(this.firestore, 'logins');

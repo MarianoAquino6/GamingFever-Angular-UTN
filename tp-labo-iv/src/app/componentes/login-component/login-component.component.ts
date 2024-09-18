@@ -54,7 +54,7 @@ export class LoginComponentComponent {
       // console.log("Emitiendo usuario logueado:", this.usuarioLogeado);
       // this.onEnviarUserLogueado.emit(this.usuarioLogeado);
       
-      // Actualiza el estado del usuario en el servicio
+      // Le mando el nombre del usuario al metodo setUsuarioLogueado del AuthService
       this.authService.setUsuarioLogueado(res.user.email);
 
       //GUARDO EL LOGIN DEL USUARIO EN UN LOGGER

@@ -19,16 +19,17 @@ export class AppComponent {
 
   constructor(private authService: AuthService) {}
 
+  // Cuando el componente se inicializa:
   ngOnInit() {
-    // Suscribirse al observable del servicio para escuchar cambios en el usuario logueado
+    // Me suscribo al observable que setee en AuthService, para asignar el valor correspondiente a 'usuarioLogueadoGeneral'
     this.authService.usuarioLogueado$.subscribe((usuario) => {
       this.usuarioLogueadoGeneral = usuario;
     });
   }
 
-  // Puedes añadir una lógica de logout aquí también
+  // Llamo al metodo logout del AuthService para que cambie el valor del usuario logueado a null
   logout() {
-    this.authService.logout();  // Llamar al método logout del servicio
+    this.authService.logout();
   }
 
   // capturarUsuarioLogueado(usuario: string) {

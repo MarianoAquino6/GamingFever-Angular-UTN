@@ -1,3 +1,4 @@
+import { RegistroComponent } from './componentes/registro/registro.component';
 import { Component } from '@angular/core';
 import { Routes } from '@angular/router';
 import { HomeComponentComponent } from './componentes/home-component/home-component.component';
@@ -10,6 +11,7 @@ export const routes: Routes = [
     { path: 'home', component: HomeComponentComponent},
     { path: 'login', component: LoginComponentComponent},
     { path: 'quien-soy', component: QuienSoyComponentComponent },
+    { path: 'registro', component: RegistroComponent },
 
 
 

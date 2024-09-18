@@ -2,23 +2,23 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'  // Hace que este servicio esté disponible en toda la aplicación
+  providedIn: 'root'
 })
 export class AuthService {
-  // BehaviorSubject almacena el estado del usuario logueado
+  // Almaceno el estado del usuario logueado en el BehaviorSubject
   private usuarioLogueadoSource = new BehaviorSubject<string | null>(null);
   
-  // Observable al que los componentes se pueden suscribir para escuchar cambios
+  // Observable al que los componentes se pueden suscribir para escuchar cambios (En este caso se suscribe el componente principal)
   usuarioLogueado$ = this.usuarioLogueadoSource.asObservable();
 
   constructor() { }
 
-  // Método actualizado para aceptar string | null
+  //Recibo el user y lo meto en usuarioLogueadoSource
   setUsuarioLogueado(usuario: string | null) {
     this.usuarioLogueadoSource.next(usuario);
   }
 
-  // Método para desloguear al usuario
+  //Convierto usuarioLogueadoSource a null
   logout() {
     this.usuarioLogueadoSource.next(null);
   }
