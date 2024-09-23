@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { HomeComponentComponent } from './componentes/home-component/home-component.component';
 import { Router, RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 import { LoginComponentComponent } from "../../dist/tp-labo-iv/browser/app/componentes/login-component/login-component.component";
+import { AuthService } from './auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -13,11 +14,27 @@ import { LoginComponentComponent } from "../../dist/tp-labo-iv/browser/app/compo
 })
 export class AppComponent {
   title = 'tp-labo-iv';
-  usuarioLogueadoGeneral: string = "";
+  // usuarioLogueadoGeneral: string = "";
+  usuarioLogueadoGeneral: string | null = null;
 
-  capturarUsuarioLogueado(usuario: string) {
-    this.usuarioLogueadoGeneral = usuario;
+  constructor(private authService: AuthService) {}
 
-    console.log("Usuario logueado recibido en el componente padre:", usuario);
+  // Cuando el componente se inicializa:
+  ngOnInit() {
+    // Me suscribo al observable que setee en AuthService, para asignar el valor correspondiente a 'usuarioLogueadoGeneral'
+    this.authService.usuarioLogueado$.subscribe((usuario) => {
+      this.usuarioLogueadoGeneral = usuario;
+    });
   }
+
+  // Llamo al metodo logout del AuthService para que cambie el valor del usuario logueado a null
+  logout() {
+    this.authService.logout();
+  }
+
+  // capturarUsuarioLogueado(usuario: string) {
+  //   this.usuarioLogueadoGeneral = usuario;
+
+  //   console.log("Usuario logueado recibido en el componente padre:", usuario);
+  // }
 }

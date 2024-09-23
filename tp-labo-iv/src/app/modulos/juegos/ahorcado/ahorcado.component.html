@@ -1,1 +1,67 @@
-<p>ahorcado works!</p>
+<section>
+    <div class="banner">
+        <h2>AHORCADO</h2>
+    </div>
+</section>
+
+<section class="ahorcado-main">
+    <div class="horca-palabra">
+        <div class="horca">
+            @switch (cantidadErrores) {
+            @case (0) {
+            <img src="/assets/img/ahorcado0.png">
+            }
+            @case (1) {
+            <img src="/assets/img/ahorcado1.png">
+            }
+            @case (2) {
+            <img src="/assets/img/ahorcado2.png">
+            }
+            @case (3) {
+            <img src="/assets/img/ahorcado3.png">
+            }
+            @case (4) {
+            <img src="/assets/img/ahorcado4.png">
+            }
+            @case (5) {
+            <img src="/assets/img/ahorcado5.png">
+            }
+            @case (6) {
+            <img src="/assets/img/ahorcado6.png">
+            }
+            }
+        </div>
+        <div class="palabra">
+            <p>{{palabraExhibida}}</p>
+        </div>
+    </div>
+
+    <div class="letras">
+        <div class="row justify-content-center">
+            <div class="col-auto" *ngFor="let letra of letras.slice(0, 14)">
+                <button type="button" class="btn btn-danger m-2 letra-btn" (click)="comprobarExistenciaLetra(letra)">{{
+                    letra }}</button>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-auto" *ngFor="let letra of letras.slice(14)">
+                <button type="button" class="btn btn-danger m-2 letra-btn" (click)="comprobarExistenciaLetra(letra)">{{
+                    letra }}</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="overlay" *ngIf="cantidadErrores === 6">
+    <div class="game-over">
+        <h2>GAME OVER</h2>
+        <button class="btn btn-danger m-1 p-3" (click)="volverAIntentar()">VOLVER A INTENTAR</button>
+    </div>
+</div>
+
+<div class="overlay" *ngIf="victoria">
+    <div class="game-over">
+        <h2>HAS GANADO!</h2>
+        <button class="btn btn-danger m-1 p-3" (click)="volverAIntentar()">VOLVER A JUGAR</button>
+    </div>
+</div>

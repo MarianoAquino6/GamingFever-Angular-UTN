@@ -42,8 +42,18 @@
     cursor: pointer;
 }
 
-.nav-derecha li:hover {
+/* Aplico estos estilos a todos los il menos al que tiene el nombre de usuario */
+.nav-derecha li:not(.username):hover {
     color: red;
+}
+.nav-derecha li:not(.username) {
+    cursor: pointer;
+}
+
+.username {
+    color: white; 
+    cursor: default; 
+    pointer-events: none;
 }
 
 /* FOOTER */

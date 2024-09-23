@@ -7,10 +7,10 @@
     <ul class="nav-derecha">
       <li routerLink="quien-soy">ACERCA DE</li>
 
-      @if (usuarioLogueadoGeneral!= "") 
+      @if (usuarioLogueadoGeneral) 
       {
-      <p>{{ usuarioLogueadoGeneral }}</p>
-      <li routerLink="home">LOG OUT</li>
+      <li class="username">USER: {{ usuarioLogueadoGeneral }}</li>
+      <li (click)="logout()" routerLink="home">LOG OUT</li>
       }
       @else 
       {

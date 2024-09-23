@@ -6,11 +6,12 @@ import { Router } from '@angular/router';
 import Toastify from 'toastify-js';
 import 'toastify-js/src/toastify.css';
 import { AuthService } from '../../auth/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-registro',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './registro.component.html',
   styleUrl: './registro.component.css'
 })
@@ -20,6 +21,8 @@ export class RegistroComponent {
 
   usuarioLogeado: string = "";
   mensajeError: string = "";
+
+  mostrarContrasenia: boolean = false;
 
   constructor(public auth: Auth, private router: Router, private firestore: Firestore, private authService: AuthService) {
 
@@ -80,4 +83,10 @@ export class RegistroComponent {
       }).showToast();
     })
   }
+
+  toggleMostrarContrasenia() {
+    this.mostrarContrasenia = !this.mostrarContrasenia;
+  }
+
 }
+

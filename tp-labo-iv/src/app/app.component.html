@@ -7,12 +7,12 @@
     <ul class="nav-derecha">
       <li routerLink="quien-soy">ACERCA DE</li>
 
-      @if (usuarioLogueadoGeneral) 
+      @if (usuarioLogueadoGeneral)
       {
       <li class="username">USER: {{ usuarioLogueadoGeneral }}</li>
       <li (click)="logout()" routerLink="home">LOG OUT</li>
       }
-      @else 
+      @else
       {
       <li routerLink="login">INGRESAR</li>
       }
@@ -21,8 +21,12 @@
 </header>
 
 <main>
-  <!-- <app-login-component (onEnviarUserLogueado)="capturarUsuarioLogueado($event)"></app-login-component> -->
   <router-outlet></router-outlet>
+
+  @if (usuarioLogueadoGeneral)
+  {
+  <app-chat></app-chat>
+  }
 </main>
 
 <footer>

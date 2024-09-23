@@ -15,14 +15,17 @@
                     <input type="text" id="username" name="username" required [(ngModel)]="usernameLogin">
                     <label for="password">CONTRASEÑA</label>
                     <input type="password" id="password" name="password" required [(ngModel)]="passLogin">
-                    <button type="submit" class="btn btn-danger" (click)="login()">INGRESAR</button>
-                    <button class="btn btn-danger" (click)="autocompletar()">AUTOCOMPLETAR</button>
+
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-danger" (click)="login()">INGRESAR</button>
+                        <button class="btn btn-danger" (click)="autocompletar()">AUTOCOMPLETAR</button>
+                    </div>
                 </form>
             </div>
 
             <div class="registro">
                 <h3>No tenes cuenta?</h3>
-                <button class="btn btn-danger" routerLink="/registro">REGISTRARSE</button>
+                <button class="btn btn-danger mt-3" routerLink="/registro">REGISTRARSE</button>
             </div>
         </div>
 

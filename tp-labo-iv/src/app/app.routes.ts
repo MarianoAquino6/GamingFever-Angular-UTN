@@ -8,14 +8,15 @@ import { PageNotFoundComponent } from './componentes/page-not-found/page-not-fou
 
 export const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: "full" },
-    { path: 'home', component: HomeComponentComponent},
-    { path: 'login', component: LoginComponentComponent},
+    { path: 'home', component: HomeComponentComponent },
+    { path: 'login', component: LoginComponentComponent },
     { path: 'quien-soy', component: QuienSoyComponentComponent },
     { path: 'registro', component: RegistroComponent },
+    {
+        path: 'juegos',
+        loadChildren: () => import('./modulos/juegos/juegos.module').then(m => m.JuegosModule)
+    },
 
-
-
-    
 
     { path: '**', component: PageNotFoundComponent }
 ];

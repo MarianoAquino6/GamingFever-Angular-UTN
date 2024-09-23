@@ -1,0 +1,27 @@
+<div class="chat-container" [ngClass]="{ 'chat-open': isChatOpen }">
+    <div class="chat-header" (click)="toggleChat()">
+        <span>CHAT</span>
+    </div>
+
+    <div class="chat-body" *ngIf="isChatOpen">
+        <div class="messages">
+            @for (message of messages; track $index) {
+            <div>
+                @if (message.user == usuarioLogueado) {
+                    Tú ({{message.fecha | date: 'shortTime'}}): {{message.mensaje}}
+                }
+                @else {
+                    {{message.user}} ({{message.fecha | date: 'shortTime'}}): {{message.mensaje}}
+                }
+            </div>
+            }
+        </div>
+
+        <div class="chat-input">
+            <input type="text" placeholder="Escribe tu mensaje aqui" [(ngModel)]="message" maxlength="100" (keydown.enter)="sendMessage()"/>
+            <button class="send-btn" (click)="sendMessage()">
+                <span class="send-icon">✔</span>
+            </button>
+        </div>
+    </div>
+</div>

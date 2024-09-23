@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 import Toastify from 'toastify-js';
 import 'toastify-js/src/toastify.css';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-login-component',
@@ -22,7 +23,8 @@ export class LoginComponentComponent {
 
   @Output() onEnviarUserLogueado = new EventEmitter<string>();
 
-  constructor(public auth: Auth, private router: Router, private firestore: Firestore) {
+  constructor(public auth: Auth, private router: Router, private firestore: Firestore, private authService: AuthService) 
+  {
 
   }
 
@@ -49,8 +51,11 @@ export class LoginComponentComponent {
       }
 
       //ENVIO EL DATO DEL USUARIO LOGUEADO AL COMPONENTE PRINCIPAL
-      console.log("Emitiendo usuario logueado:", this.usuarioLogeado);
-      this.onEnviarUserLogueado.emit(this.usuarioLogeado);
+      // console.log("Emitiendo usuario logueado:", this.usuarioLogeado);
+      // this.onEnviarUserLogueado.emit(this.usuarioLogeado);
+      
+      // Le mando el nombre del usuario al metodo setUsuarioLogueado del AuthService
+      this.authService.setUsuarioLogueado(res.user.email);
 
       //GUARDO EL LOGIN DEL USUARIO EN UN LOGGER
       let col = collection(this.firestore, 'logins');

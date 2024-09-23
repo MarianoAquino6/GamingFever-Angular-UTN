@@ -51,3 +51,16 @@ button {
     max-width: 100%;
     height: auto; 
 }
+
+.password-container {
+    position: relative;
+    width: 40%;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
