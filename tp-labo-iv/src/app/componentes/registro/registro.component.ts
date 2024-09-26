@@ -39,7 +39,7 @@ export class RegistroComponent {
         Toastify({
           text: `Bienvenido, ${this.usuarioLogeado}!`,
           backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-          duration: 3000
+          duration: 1500
         }).showToast();
       }
 

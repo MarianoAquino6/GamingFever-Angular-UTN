@@ -65,7 +65,7 @@ export class LoginComponentComponent {
       //REDIRIJO EL USUARIO AL HOME TRAS 3 SEGUNDOS
       setTimeout(() => {
         this.router.navigate(['/home']);
-      }, 3000);
+      }, 1500);
 
     }).catch((e) => {
       switch (e.code) {

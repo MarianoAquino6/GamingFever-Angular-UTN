@@ -4,7 +4,7 @@
     </div>
 
     <div class="chat-body" *ngIf="isChatOpen">
-        <div class="messages">
+        <div class="messages" #messageContainer>
             @for (message of messages; track $index) {
             <div>
                 @if (message.user == usuarioLogueado) {

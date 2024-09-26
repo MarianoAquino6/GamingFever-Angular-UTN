@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, NgModule } from '@angular/core';
+import { Component, NgModule, ElementRef, ViewChild } from '@angular/core';
 import { addDoc, collection, collectionData, Firestore, where, orderBy, limit, query, doc, setDoc } from '@angular/fire/firestore';
 
 import { FormsModule } from '@angular/forms';
@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs';
   styleUrl: './chat.component.css'
 })
 export class ChatComponent {
+  @ViewChild('messageContainer') private messageContainer!: ElementRef;
   isChatOpen = false;
   message: string = '';
   usuarioLogueado: string | null = null;
@@ -22,8 +23,24 @@ export class ChatComponent {
 
   constructor(private firestore: Firestore, private authService: AuthService) { }
 
+  // Función que se ejecuta después de que la vista se renderiza
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+  }
+
+  // Desplaza el scroll al final del contenedor de mensajes
+  scrollToBottom(): void {
+    try {
+      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+    } catch (err) { }
+  }
+
   toggleChat() {
     this.isChatOpen = !this.isChatOpen;
+
+    if (this.isChatOpen) {
+      this.scrollToBottom(); // Bajamos al abrir el chat
+    }
   }
 
   // Cuando el componente se inicializa:
@@ -41,8 +58,8 @@ export class ChatComponent {
 
     const filteredQuery = query(
       col
-      ,orderBy("fecha", "asc")
-      ,limit(100)
+      , orderBy("fecha", "asc")
+      , limit(100)
     );
 
     const observable = collectionData(filteredQuery);
@@ -55,7 +72,8 @@ export class ChatComponent {
         ...msg,
         fecha: msg.fecha instanceof Date ? msg.fecha : new Date(msg.fecha.seconds * 1000) // Ajusta esto si 'fecha' viene como Timestamp
       }));
-      
+
+      this.scrollToBottom(); // Bajamos cada vez que llegan nuevos mensajes
     })
 
   }
@@ -67,6 +85,9 @@ export class ChatComponent {
       addDoc(col, obj).then(() => {
         // Limpio el input después de enviar el mensaje
         this.message = '';
+        setTimeout(() => {
+          this.scrollToBottom(); // Bajamos después de enviar un mensaje
+        }, 100);
       });
     }
   }

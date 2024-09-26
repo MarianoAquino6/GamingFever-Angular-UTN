@@ -31,6 +31,15 @@
     white-space: pre;
 }
 
+
+.letras h3{
+    display: flex;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
 .letra-btn {
     width: 60px; /* Ajusta el ancho de los botones */
     height: 60px; /* Ajusta la altura de los botones */

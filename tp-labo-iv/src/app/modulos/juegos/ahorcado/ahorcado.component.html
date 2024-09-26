@@ -37,6 +37,10 @@
     </div>
 
     <div class="letras">
+        <div class="elige">
+            <h3>ELIGE UNA LETRA</h3>
+        </div>
+
         <div class="row justify-content-center">
             <div class="col-auto" *ngFor="let letra of letras.slice(0, 14)">
                 <button type="button" class="btn btn-danger m-2 letra-btn" (click)="comprobarExistenciaLetra(letra)">{{
