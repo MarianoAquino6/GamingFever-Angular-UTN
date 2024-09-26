@@ -11,10 +11,18 @@
                 <h3>Registra tu nueva cuenta</h3>
 
                 <form id="registro-form">
-                    <label for="username">USUARIO</label>
+                    <label for="username">USUARIO (Dirección de email)</label>
                     <input type="text" id="username" name="username" required [(ngModel)]="nuevoUsername">
-                    <label for="password">CONTRASEÑA</label>
-                    <input type="text" id="password" name="password" required [(ngModel)]="nuevaPass">
+
+                    <label for="password">CONTRASEÑA (Debe contener al menos 6 caracteres)</label>
+                    <div class="password-container">
+                        <input type="password" id="password" name="password" required [(ngModel)]="nuevaPass" [type]="mostrarContrasenia ? 'text' : 'password'">
+                        <i class="eye-icon" (click)="toggleMostrarContrasenia()">
+                            <span *ngIf="mostrarContrasenia">👁️</span>
+                            <span *ngIf="!mostrarContrasenia">🙈</span>
+                        </i>
+                    </div>
+
                     <button type="submit" class="btn btn-danger" (click)="registrarUsuario()">REGISTRAR</button>
                 </form>
             </div>

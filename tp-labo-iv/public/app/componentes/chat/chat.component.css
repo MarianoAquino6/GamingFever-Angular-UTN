@@ -1,0 +1,104 @@
+/* Estilo del contenedor del chat */
+.chat-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    background-color: rgb(22, 21, 21);
+    border-radius: 10px;
+    color: black;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+    font-family: 'Arial', sans-serif;
+    transition: height 0.3s ease;
+    cursor: pointer;
+    border: 1px solid black;
+  }
+  
+  /* Estilo cuando el chat está abierto */
+  .chat-open {
+    height: 400px;
+  }
+  
+  /* Estilo de la cabecera del chat */
+  .chat-header {
+    background-color: red;
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+  }
+
+  .chat-header:hover{
+    background-color: rgb(163, 11, 11);
+  }
+  
+  /* Estilo del cuerpo del chat */
+  .chat-body {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: calc(100% - 40px); /* Para ajustar el tamaño al header */
+  }
+  
+  /* Área de mensajes */
+  .messages {
+    color: white;
+    flex-grow: 1;
+    padding: 10px;
+    margin-bottom: 10px;
+    overflow-y: auto;
+    cursor: auto;
+  }
+
+  /* Estilo para los mensajes individuales */
+  .messages div {
+    word-wrap: break-word; /* Permitir que las palabras largas se dividan */
+    overflow-wrap: break-word; /* Compatibilidad con navegadores modernos */
+    white-space: normal; /* Permitir que el texto se ajuste */
+    max-width: 100%; /* Asegurar que no exceda el ancho */
+    margin-bottom: 5px; /* Espacio entre mensajes */
+  }
+  
+  .user {
+    color: red;
+  }
+  
+  /* Entrada de texto y botón de enviar */
+  .chat-input {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid black;
+  }
+  
+  .chat-input input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid black;
+    border-right: none;
+    border-radius: 0 0 0 10px;
+    font-size: 14px;
+  }
+  
+  .send-btn {
+    background-color: red;
+    color: white;
+    border: 1px solid black;
+    border-left: none;
+    padding: 7px;
+    cursor: pointer;
+    border-radius: 0 0 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .send-btn:hover {
+    background-color: rgb(163, 11, 11);
+  }
+  
+  .send-icon {
+    font-size: 18px;
+    font-weight: bold;
+  }

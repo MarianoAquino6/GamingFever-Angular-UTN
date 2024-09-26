@@ -65,18 +65,15 @@ export class LoginComponentComponent {
       //REDIRIJO EL USUARIO AL HOME TRAS 3 SEGUNDOS
       setTimeout(() => {
         this.router.navigate(['/home']);
-      }, 3000);
+      }, 1500);
 
     }).catch((e) => {
       switch (e.code) {
         case "auth/invalid-email":
           this.mensajeError = "Email inválido";
           break;
-        case "auth/user-not-found":
-          this.mensajeError = "Usuario no encontrado";
-          break;
-        case "auth/wrong-password":
-          this.mensajeError = "Contraseña incorrecta";
+        case "auth/invalid-credential":
+          this.mensajeError = "Credenciales incorrectas";
           break;
         case "auth/network-request-failed":
           this.mensajeError = "Error de red. Intenta nuevamente.";

@@ -17,6 +17,27 @@ export class MayorOMenorComponent {
 
   ngOnInit() {
     this.generarCartasOrdenadasRandom();
+    this.precargarImagenes();
+  }
+
+  precargarImagenes() {
+    const imagenesCartas = [
+      '/assets/img/carta1.png',
+      '/assets/img/carta2.png',
+      '/assets/img/carta3.png',
+      '/assets/img/carta4.png',
+      '/assets/img/carta5.png',
+      '/assets/img/carta6.png',
+      '/assets/img/carta7.png',
+      '/assets/img/carta8.png',
+      '/assets/img/carta9.png',
+      '/assets/img/carta10.png',
+    ];
+  
+    imagenesCartas.forEach((imagen) => {
+      const img = new Image();
+      img.src = imagen; // Esto hace que el navegador precargue las imágenes
+    });
   }
 
   generarCartasOrdenadasRandom() {

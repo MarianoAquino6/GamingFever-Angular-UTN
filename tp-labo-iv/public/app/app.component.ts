@@ -4,17 +4,17 @@ import { HomeComponentComponent } from './componentes/home-component/home-compon
 import { Router, RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 import { LoginComponentComponent } from "../../dist/tp-labo-iv/browser/app/componentes/login-component/login-component.component";
 import { AuthService } from './auth/auth.service';
+import { ChatComponent } from "./componentes/chat/chat.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HomeComponentComponent, RouterLink, RouterLinkActive, LoginComponentComponent],
+  imports: [RouterOutlet, HomeComponentComponent, RouterLink, RouterLinkActive, LoginComponentComponent, ChatComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'tp-labo-iv';
-  // usuarioLogueadoGeneral: string = "";
   usuarioLogueadoGeneral: string | null = null;
 
   constructor(private authService: AuthService) {}
@@ -31,10 +31,4 @@ export class AppComponent {
   logout() {
     this.authService.logout();
   }
-
-  // capturarUsuarioLogueado(usuario: string) {
-  //   this.usuarioLogueadoGeneral = usuario;
-
-  //   console.log("Usuario logueado recibido en el componente padre:", usuario);
-  // }
 }
