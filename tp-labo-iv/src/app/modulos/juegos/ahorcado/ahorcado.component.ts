@@ -30,6 +30,8 @@ export class AhorcadoComponent {
   letras: string[] = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'.split('');
   palabraExhibida!: string;
   victoria: boolean = false;
+  puntaje: number = 0;
+  letrasDescubiertas: string[] = [];
 
   constructor() { }
 
@@ -76,6 +78,12 @@ export class AhorcadoComponent {
         return char === letra ? letra : this.palabraExhibida.split(' ')[index];
       }).join(' ');
 
+      if (!this.letrasDescubiertas.includes(letra))
+      {
+        this.letrasDescubiertas.push(letra);
+        this.puntaje++;
+      }
+
       //Compruebo la victoria
       this.verificarVictoria();
     }
@@ -87,9 +95,15 @@ export class AhorcadoComponent {
     }
   }
 
-  volverAIntentar() {
+  volverAIntentar(perdio: boolean) {
     this.cantidadErrores = 0;
     this.elegirPalabraRandom();
     this.victoria = false;
+    this.letrasDescubiertas = [];
+
+    if (perdio)
+    {
+      this.puntaje = 0;
+    }
   }
 }

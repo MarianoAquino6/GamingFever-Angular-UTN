@@ -35,6 +35,24 @@ export class AhorcadoComponent {
 
   ngOnInit() {
     this.elegirPalabraRandom();
+    this.precargarImagenes();
+  }
+
+  precargarImagenes() {
+    const imagenesAhorcado = [
+      '/assets/img/ahorcado0.png',
+      '/assets/img/ahorcado1.png',
+      '/assets/img/ahorcado2.png',
+      '/assets/img/ahorcado3.png',
+      '/assets/img/ahorcado4.png',
+      '/assets/img/ahorcado5.png',
+      '/assets/img/ahorcado6.png',
+    ];
+  
+    imagenesAhorcado.forEach((imagen) => {
+      const img = new Image();
+      img.src = imagen; // Esto hace que el navegador cargue la imagen sin mostrarla
+    });
   }
 
   elegirPalabraRandom() {

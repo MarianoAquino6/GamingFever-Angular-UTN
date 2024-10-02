@@ -1,0 +1,66 @@
+<section>
+    <div class="banner">
+        <h2>PREGUNTADOS</h2>
+    </div>
+</section>
+
+<section class="preguntados-main">
+    <div class="bandera-estado">
+        <div class="bandera">
+            <img [src]="banderaPaisSeleccionado" alt="Bandera pais seleccionado">
+        </div>
+        <div class="estado">
+            <p>TIEMPO: {{contador}}</p>
+            @switch (vidas) {
+            @case (3) {
+            <p>VIDAS: ❤️❤️❤️</p>
+            }
+            @case (2) {
+            <p>VIDAS: ❤️❤️</p>
+            }
+            @case (1) {
+            <p>VIDAS: ❤️</p>
+            }
+            @case (0) {
+            <p>VIDAS: 💔</p>
+            }
+            }
+            <p>PUNTAJE: {{puntaje}}</p>
+        </div>
+    </div>
+
+    <div class="multiple-choice">
+        <div class="pregunta">
+            <h3>A QUE PAIS CORRESPONDE ESTA BANDERA?</h3>
+        </div>
+        <div class="opciones">
+            <button type="button" class="btn btn-danger m-2 opcion-btn" (click)="verificarRespuesta(primeraOpcion)">
+                {{ primeraOpcion }}
+            </button>
+            <button type="button" class="btn btn-danger m-2 opcion-btn" (click)="verificarRespuesta(segundaOpcion)">
+                {{ segundaOpcion }}
+            </button>
+            <button type="button" class="btn btn-danger m-2 opcion-btn" (click)="verificarRespuesta(terceraOpcion)">
+                {{ terceraOpcion }}
+            </button>
+            <button type="button" class="btn btn-danger m-2 opcion-btn" (click)="verificarRespuesta(cuartaOpcion)">
+                {{ cuartaOpcion }}
+            </button>
+        </div>
+    </div>
+</section>
+
+@if(contador==0 && vidas>0)
+{
+    <ng-container *ngIf="verificarRespuesta('TIMEOUT')"></ng-container>
+}
+
+@if (vidas===0) {
+<div class="overlay">
+    <div class="game-over">
+        <h2>GAME OVER</h2>
+        <p>Tu puntaje: {{puntaje}}</p>
+        <button class="btn btn-danger m-1 p-3" (click)="volverAIntentar()">VOLVER A INTENTAR</button>
+    </div>
+</div>
+}

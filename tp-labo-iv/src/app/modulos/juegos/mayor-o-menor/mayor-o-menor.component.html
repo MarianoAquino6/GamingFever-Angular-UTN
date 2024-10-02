@@ -7,39 +7,9 @@
 <section class="mayor-main">
     <div class="carta-estado">
         <div class="carta">
-            @switch (cartasOrdenadasRandom[ronda-1]) {
-            @case (1) {
-            <img src="/assets/img/carta1.png">
-            }
-            @case (2) {
-            <img src="/assets/img/carta2.png">
-            }
-            @case (3) {
-            <img src="/assets/img/carta3.png">
-            }
-            @case (4) {
-            <img src="/assets/img/carta4.png">
-            }
-            @case (5) {
-            <img src="/assets/img/carta5.png">
-            }
-            @case (6) {
-            <img src="/assets/img/carta6.png">
-            }
-            @case (7) {
-            <img src="/assets/img/carta7.png">
-            }
-            @case (8) {
-            <img src="/assets/img/carta8.png">
-            }
-            @case (9) {
-            <img src="/assets/img/carta9.png">
-            }
-            @case (10) {
-            <img src="/assets/img/carta10.png">
-            }
-            }
+            <img *ngIf="cartaActual" [src]="cartaActual.image" alt="Carta actual" />
         </div>
+
         <div class="estado">
             @switch (vidas) {
                 @case (3) {
@@ -55,19 +25,21 @@
                     <p>VIDAS: 💔</p>
                 }
             }
-            <p>PUNTAJE: {{puntaje}}/10</p>
+            <p>PUNTAJE: {{puntaje}}</p>
         </div>
     </div>
+</section>
 
+<section>
     <div class="opciones">
         <div class="elige">
             <h3>ADIVINA LA PROXIMA CARTA</h3>
         </div>
         <div class="botones">
-            <button type="button" class="btn btn-danger m-2 opcion-btn" (click)="comprobarMayorOMenor(0)">
+            <button type="button" class="btn btn-danger m-2 opcion-btn" (click)="comprobarMayorOMenor(0)" aria-label="Elegir menor">
                 MENOR
             </button>
-            <button type="button" class="btn btn-danger m-2 opcion-btn" (click)="comprobarMayorOMenor(1)">
+            <button type="button" class="btn btn-danger m-2 opcion-btn" (click)="comprobarMayorOMenor(1)" aria-label="Elegir mayor">
                 MAYOR
             </button>
         </div>
@@ -77,13 +49,7 @@
 <div class="overlay" *ngIf="vidas === 0">
     <div class="game-over">
         <h2>GAME OVER</h2>
+        <p>Tu puntaje: {{puntaje}}</p>
         <button class="btn btn-danger m-1 p-3" (click)="volverAIntentar()">VOLVER A INTENTAR</button>
-    </div>
-</div>
-
-<div class="overlay" *ngIf="ronda === 10">
-    <div class="game-over">
-        <h2>HAS GANADO!</h2>
-        <button class="btn btn-danger m-1 p-3" (click)="volverAIntentar()">VOLVER A JUGAR</button>
     </div>
 </div>
