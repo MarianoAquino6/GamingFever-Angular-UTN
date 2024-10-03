@@ -31,8 +31,13 @@
             }
             }
         </div>
-        <div class="palabra">
-            <p>{{palabraExhibida}}</p>
+        <div class="puntaje-palabra">
+            <div class="puntaje">
+                <p>PUNTAJE: {{puntaje}}</p>
+            </div>
+            <div class="palabra">
+                <p>{{palabraExhibida}}</p>
+            </div>
         </div>
     </div>
 
@@ -43,14 +48,32 @@
 
         <div class="row justify-content-center">
             <div class="col-auto" *ngFor="let letra of letras.slice(0, 14)">
-                <button type="button" class="btn btn-danger m-2 letra-btn" (click)="comprobarExistenciaLetra(letra)">{{
-                    letra }}</button>
+                @if (letrasDescubiertas.includes(letra))
+                {
+                <button type="button" class="btn btn-success m-2 letra-btn" (click)="comprobarExistenciaLetra(letra)">
+                    {{letra}}
+                </button>
+                }
+                @else {
+                <button type="button" class="btn btn-danger m-2 letra-btn" (click)="comprobarExistenciaLetra(letra)">
+                    {{letra}}
+                </button>
+                }
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="col-auto" *ngFor="let letra of letras.slice(14)">
-                <button type="button" class="btn btn-danger m-2 letra-btn" (click)="comprobarExistenciaLetra(letra)">{{
-                    letra }}</button>
+                @if (letrasDescubiertas.includes(letra))
+                {
+                <button type="button" class="btn btn-success m-2 letra-btn" (click)="comprobarExistenciaLetra(letra)">
+                    {{letra}}
+                </button>
+                }
+                @else {
+                <button type="button" class="btn btn-danger m-2 letra-btn" (click)="comprobarExistenciaLetra(letra)">
+                    {{letra}}
+                </button>
+                }
             </div>
         </div>
     </div>
@@ -59,13 +82,15 @@
 <div class="overlay" *ngIf="cantidadErrores === 6">
     <div class="game-over">
         <h2>GAME OVER</h2>
-        <button class="btn btn-danger m-1 p-3" (click)="volverAIntentar()">VOLVER A INTENTAR</button>
+        <p>Tu puntaje: {{puntaje}}</p>
+        <button class="btn btn-danger m-1 p-3" (click)="volverAIntentar(true)">VOLVER A INTENTAR</button>
     </div>
 </div>
 
 <div class="overlay" *ngIf="victoria">
     <div class="game-over">
         <h2>HAS GANADO!</h2>
-        <button class="btn btn-danger m-1 p-3" (click)="volverAIntentar()">VOLVER A JUGAR</button>
+        <p>Tu puntaje: {{puntaje}}</p>
+        <button class="btn btn-danger m-1 p-3" (click)="volverAIntentar(false)">SEGUIR JUGANDO</button>
     </div>
 </div>

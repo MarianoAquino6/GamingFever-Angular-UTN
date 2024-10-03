@@ -79,7 +79,7 @@ export class RegistroComponent {
       Toastify({
         text: this.mensajeError,
         backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
-        duration: 3000
+        duration: 2000
       }).showToast();
     })
   }
@@ -89,4 +89,3 @@ export class RegistroComponent {
   }
 
 }
-

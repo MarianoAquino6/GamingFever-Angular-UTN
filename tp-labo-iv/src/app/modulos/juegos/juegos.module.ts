@@ -19,6 +19,7 @@ import { NamethesongComponent } from './namethesong/namethesong.component';
     CommonModule,
     JuegosRoutingModule,
     FormsModule,
+    // Este modulo havilita el HttpClient
     HttpClientModule,
   ]
 })

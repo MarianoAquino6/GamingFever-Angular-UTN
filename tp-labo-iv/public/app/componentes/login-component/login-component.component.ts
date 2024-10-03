@@ -28,7 +28,7 @@ export class LoginComponentComponent {
 
   }
 
-  //BOTON PARA AUTOCOMPLETAR
+  // Boton para autocompletar
   autocompletar()
   {
     this.usernameLogin = "marianaquino@hotmail.com";
@@ -37,36 +37,36 @@ export class LoginComponentComponent {
 
   login() {
     signInWithEmailAndPassword(this.auth, this.usernameLogin, this.passLogin).then((res) => {
-      //NO HAY ERRORES
+      //Hasta acá no hay errores
       this.mensajeError = "";
 
-      //MUESTRO UN CARTEL DE BIENVENIDO Y ME GUARDO EL USUARIO LOGUEADO
+      // Si el email que ingreso no esta vacio
       if (res.user.email !== null) {
+        // Me guardo el usuario logueado
         this.usuarioLogeado = res.user.email;
+
+        // Muestro un cartel de bienvenido
         Toastify({
           text: `Bienvenido, ${this.usuarioLogeado}!`,
           backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-          duration: 3000
+          duration: 1500
         }).showToast();
       }
-
-      //ENVIO EL DATO DEL USUARIO LOGUEADO AL COMPONENTE PRINCIPAL
-      // console.log("Emitiendo usuario logueado:", this.usuarioLogeado);
-      // this.onEnviarUserLogueado.emit(this.usuarioLogeado);
       
       // Le mando el nombre del usuario al metodo setUsuarioLogueado del AuthService
       this.authService.setUsuarioLogueado(res.user.email);
 
-      //GUARDO EL LOGIN DEL USUARIO EN UN LOGGER
+      // Guardo el login del usuario
       let col = collection(this.firestore, 'logins');
       let obj = { fecha: new Date(), "user": res.user.email};
       addDoc(col, obj)
 
-      //REDIRIJO EL USUARIO AL HOME TRAS 3 SEGUNDOS
+      // Redirijo al usuario al home tras 1.5 segundos
       setTimeout(() => {
         this.router.navigate(['/home']);
       }, 1500);
-
+      
+      // Si surgen errores los capto
     }).catch((e) => {
       switch (e.code) {
         case "auth/invalid-email":
@@ -83,11 +83,11 @@ export class LoginComponentComponent {
           break;
       }
 
-      //LE MUESTRO EL MENSAJE DE ERROR
+      // Muestro el mensaje de error
       Toastify({
         text: this.mensajeError,
         backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
-        duration: 3000
+        duration: 2000
       }).showToast();
     })
   }

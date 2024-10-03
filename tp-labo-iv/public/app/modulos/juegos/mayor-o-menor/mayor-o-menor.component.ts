@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-mayor-o-menor',
@@ -6,79 +7,78 @@ import { Component } from '@angular/core';
   templateUrl: './mayor-o-menor.component.html',
   styleUrl: './mayor-o-menor.component.css'
 })
+
 export class MayorOMenorComponent {
-  ronda: number = 1;
   vidas: number = 3;
   puntaje: number = 0;
-  cartasOrdenadasRandom!: number[];
-  resultado!: boolean;
+  deckId: string = ''; // ID del mazo que recibo de la API
+  cartaActual: any;
+  cartaAnterior: any;
 
-  constructor() { }
+  constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.generarCartasOrdenadasRandom();
-    this.precargarImagenes();
+    this.obtenerNuevoMazo();
   }
 
-  precargarImagenes() {
-    const imagenesCartas = [
-      '/assets/img/carta1.png',
-      '/assets/img/carta2.png',
-      '/assets/img/carta3.png',
-      '/assets/img/carta4.png',
-      '/assets/img/carta5.png',
-      '/assets/img/carta6.png',
-      '/assets/img/carta7.png',
-      '/assets/img/carta8.png',
-      '/assets/img/carta9.png',
-      '/assets/img/carta10.png',
-    ];
-  
-    imagenesCartas.forEach((imagen) => {
-      const img = new Image();
-      img.src = imagen; // Esto hace que el navegador precargue las imágenes
-    });
+  obtenerNuevoMazo() {
+    // Llamo a la API para obtener un mazo nuevo. Me da un observable al cual me suscribo
+    this.http.get('https://deckofcardsapi.com/api/deck/new/shuffle/')
+      .subscribe((response: any) => {
+        // La API me da en la response el ID del mazo
+        this.deckId = response.deck_id; // Guardo el ID del mazo para luego usarlo en dibujar carta
+        this.dibujarCarta(); // Dibujo la primera carta
+      });
   }
 
-  generarCartasOrdenadasRandom() {
-    this.cartasOrdenadasRandom = Array.from({ length: 10 }, (_, i) => i + 1).sort(() => Math.random() - 0.5);
-    console.log("ORDEN: " + this.cartasOrdenadasRandom);
+  dibujarCarta() {
+    // Llamo a la API para dibujar una carta del mazo. Me da un observable al cual me suscribo
+    this.http.get(`https://deckofcardsapi.com/api/deck/${this.deckId}/draw/?count=1`)
+      .subscribe((response: any) => {
+        // La carta que estaba en la ronda anterior la asigno a la variable "cartaAnterior"
+        this.cartaAnterior = this.cartaActual;
+        // Reemplazo la carta que estaba en la ronda anterior con la carta que me da el maso
+        this.cartaActual = response.cards[0];
+      });
   }
 
-  comprobarMayorOMenor(mayorOMenor: number): boolean {
-    this.resultado = false;
-
-    switch (mayorOMenor) {
-      case 0:
-        if (this.cartasOrdenadasRandom[this.ronda] < this.cartasOrdenadasRandom[this.ronda-1]) {
-          this.resultado = true;
-        }
-
-        break;
-      case 1:
-        if (this.cartasOrdenadasRandom[this.ronda] > this.cartasOrdenadasRandom[this.ronda-1]) {
-          this.resultado = true;
-        }
-
-        break;
+  // Eleccion puede ser 0 (Menor) o 1 (Mayor)
+  comprobarMayorOMenor(eleccion: number) {
+    // Si no hay una carta anterior (primera ronda), no hay nada que comparar
+    if (!this.cartaAnterior) {
+      this.dibujarCarta(); // Solo dibuja la primera carta
+      return;
     }
 
-    if (!this.resultado) {
+    let valorActual = this.obtenerValorNumerico(this.cartaActual.value);
+    let valorAnterior = this.obtenerValorNumerico(this.cartaAnterior.value);
+
+    if ((eleccion === 0 && valorActual < valorAnterior) || (eleccion === 1 && valorActual > valorAnterior)) {
+      this.puntaje++;
+    } else {
       this.vidas--;
     }
-    else {
-      this.puntaje++;
+
+    if (this.vidas > 0) {
+      this.dibujarCarta(); // Dibujo la siguiente carta
     }
+  }
 
-    this.ronda++;
-
-    return this.resultado;
+  obtenerValorNumerico(valor: string): number {
+    // Convierto el valor de la carta a su equivalente numérico
+    switch (valor) {
+      case 'ACE': return 1;
+      case 'JACK': return 11;
+      case 'QUEEN': return 12;
+      case 'KING': return 13;
+      default: return parseInt(valor); // Para las cartas del 2 al 10
+    }
   }
 
   volverAIntentar() {
-    this.ronda = 1;
+    // Reseteo los valores del juego y obtengo un nuevo mazo
     this.vidas = 3;
     this.puntaje = 0;
-    this.generarCartasOrdenadasRandom();
+    this.obtenerNuevoMazo();
   }
 }

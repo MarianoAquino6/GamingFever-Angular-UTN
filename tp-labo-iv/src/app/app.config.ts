@@ -13,6 +13,7 @@ export const appConfig: ApplicationConfig = {
     provideFirebaseApp(() => initializeApp({"projectId":"tp-labo-iv-marian-aquino","appId":"1:814389571342:web:fcc55f9f15bcfdcfb1f15f","storageBucket":"tp-labo-iv-marian-aquino.appspot.com","apiKey":"AIzaSyD7XRLaevOsCYqoW3WcRIZu6LJbxpYryHM","authDomain":"tp-labo-iv-marian-aquino.firebaseapp.com","messagingSenderId":"814389571342"})),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
+    // Este permite inyectar el servicio 'HttpClient' y por lo tanto, realizar peticiones HTTP
     provideHttpClient()
   ]
 };
