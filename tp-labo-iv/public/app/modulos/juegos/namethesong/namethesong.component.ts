@@ -47,8 +47,9 @@ export class NamethesongComponent {
         this.seleccionarAleatoreamenteCancion();
         this.generarOpciones();
         this.iniciarContador();
-      }
-    );
+      }, error => {
+        console.error("Error al obtener canciones: ", error);
+      });
   }
 
   ngOnDestroy() {
@@ -72,38 +73,70 @@ export class NamethesongComponent {
   }
 
   seleccionarAleatoreamenteCancion() {
-    if (this.cancionesSeleccionadas.size >= this.cancionesMetallica.length) {
-      this.cancionesSeleccionadas.clear(); // Reinicia las seleccionadas
-      this.puntaje = 0; // O reinicia el puntaje si lo deseas
-      this.vidas = 3; // Reinicia las vidas
+    if (this.cancionesMetallica && this.cancionesMetallica.length > 0) {
+      let indiceAleatorio: number;
+  
+      do {
+        indiceAleatorio = Math.floor(Math.random() * this.cancionesMetallica.length);
+      } while (this.cancionesSeleccionadas.has(indiceAleatorio));
+  
+      const cancionSeleccionada = this.cancionesMetallica[indiceAleatorio];
+  
+      if (cancionSeleccionada) {
+        console.log("Canción seleccionada:", cancionSeleccionada);
+        
+        // Verifica si el álbum está definido
+        if (cancionSeleccionada.album) {
+          this.cancionesSeleccionadas.add(indiceAleatorio);
+          this.posicionCancionSeleccionada = indiceAleatorio;
+          this.imagenAlbumCancionSeleccionada = cancionSeleccionada.album;
+          this.tituloCancionSeleccionada = cancionSeleccionada.titulo;
+          this.audioCancionSeleccionada = cancionSeleccionada.audio;
+          console.log("La canción elegida es " + this.tituloCancionSeleccionada);
+        } else {
+          console.error("La canción seleccionada no tiene un álbum definido.");
+        }
+      } else {
+        console.error("No se pudo seleccionar una canción.");
+      }
+    } else {
+      console.error("No se encontraron canciones.");
     }
-
-    let indiceAleatorio: number;
-
-    do {
-      indiceAleatorio = Math.floor(Math.random() * this.cancionesMetallica.length);
-    } while (this.cancionesSeleccionadas.has(indiceAleatorio));
-
-    this.cancionesSeleccionadas.add(indiceAleatorio); // Añade la canción seleccionada
-
-    this.posicionCancionSeleccionada = indiceAleatorio;
-    this.imagenAlbumCancionSeleccionada = this.cancionesMetallica[this.posicionCancionSeleccionada].album;
-    this.tituloCancionSeleccionada = this.cancionesMetallica[this.posicionCancionSeleccionada].titulo;
-    this.audioCancionSeleccionada = this.cancionesMetallica[this.posicionCancionSeleccionada].audio;
-
-    console.log("La canción elegida es " + this.cancionesMetallica[this.posicionCancionSeleccionada].titulo);
-
-
-
-
-    // const indiceAleatorio = Math.floor(Math.random() * this.cancionesMetallica.length);
-    // this.posicionCancionSeleccionada = indiceAleatorio;
-    // this.imagenAlbumCancionSeleccionada = this.cancionesMetallica[this.posicionCancionSeleccionada].album;
-    // this.tituloCancionSeleccionada = this.cancionesMetallica[this.posicionCancionSeleccionada].titulo;
-    // this.audioCancionSeleccionada = this.cancionesMetallica[this.posicionCancionSeleccionada].audio;
-
-    // console.log("La cancion elegida es " + this.cancionesMetallica[this.posicionCancionSeleccionada].titulo);
   }
+
+  // seleccionarAleatoreamenteCancion() {
+  //   if (this.cancionesSeleccionadas.size >= this.cancionesMetallica.length) {
+  //     this.cancionesSeleccionadas.clear(); // Reinicia las seleccionadas
+  //     this.puntaje = 0; // O reinicia el puntaje si lo deseas
+  //     this.vidas = 3; // Reinicia las vidas
+  //   }
+
+  //   let indiceAleatorio: number;
+
+  //   do {
+  //     indiceAleatorio = Math.floor(Math.random() * this.cancionesMetallica.length);
+  //   } while (this.cancionesSeleccionadas.has(indiceAleatorio));
+
+  //   this.cancionesSeleccionadas.add(indiceAleatorio); // Añade la canción seleccionada
+
+  //   this.posicionCancionSeleccionada = indiceAleatorio;
+  //   this.imagenAlbumCancionSeleccionada = this.cancionesMetallica[this.posicionCancionSeleccionada].album;
+  //   this.tituloCancionSeleccionada = this.cancionesMetallica[this.posicionCancionSeleccionada].titulo;
+  //   this.audioCancionSeleccionada = this.cancionesMetallica[this.posicionCancionSeleccionada].audio;
+
+  //   console.log("La canción elegida es " + this.cancionesMetallica[this.posicionCancionSeleccionada].titulo);
+
+
+
+
+  //   // const indiceAleatorio = Math.floor(Math.random() * this.cancionesMetallica.length);
+  //   // this.posicionCancionSeleccionada = indiceAleatorio;
+  //   // this.imagenAlbumCancionSeleccionada = this.cancionesMetallica[this.posicionCancionSeleccionada].album;
+  //   // this.tituloCancionSeleccionada = this.cancionesMetallica[this.posicionCancionSeleccionada].titulo;
+  //   // this.audioCancionSeleccionada = this.cancionesMetallica[this.posicionCancionSeleccionada].audio;
+
+  //   // console.log("La cancion elegida es " + this.cancionesMetallica[this.posicionCancionSeleccionada].titulo);
+  // }
 
   generarOpciones() {
     const listaTresIndicesAleatorios = new Set<number>();
