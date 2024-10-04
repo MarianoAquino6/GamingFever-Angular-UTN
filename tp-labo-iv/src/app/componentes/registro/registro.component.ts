@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
-import { addDoc, collection, collectionData, Firestore, where, orderBy, limit, query, doc, setDoc  } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, Firestore, where, orderBy, limit, query, doc, setDoc } from '@angular/fire/firestore';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import Toastify from 'toastify-js';
 import 'toastify-js/src/toastify.css';
 import { AuthService } from '../../auth/auth.service';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-registro',
@@ -36,11 +37,22 @@ export class RegistroComponent {
       //MUESTRO UN CARTEL DE BIENVENIDO Y ME GUARDO EL USUARIO LOGUEADO
       if (res.user.email !== null) {
         this.usuarioLogeado = res.user.email;
-        Toastify({
-          text: `Bienvenido, ${this.usuarioLogeado}!`,
-          backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-          duration: 1500
-        }).showToast();
+
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'success',
+          title: 'Bienvenido',
+          text: `¡Hola ${this.usuarioLogeado}!`,
+          showConfirmButton: false,
+          timer: 2000,
+          background: '#333', // Fondo oscuro
+          color: '#fff', // Texto blanco
+          iconColor: '##28a745', // Color del icono, verde en este caso
+          customClass: {
+            popup: 'colored-toast'
+          }
+        });
       }
 
       // Le mando el nombre del usuario al metodo setUsuarioLogueado del AuthService
@@ -48,14 +60,14 @@ export class RegistroComponent {
 
       //GUARDO EL LOGIN DEL USUARIO EN UN LOGGER
       let col = collection(this.firestore, 'logins');
-      let obj = { fecha: new Date(), "user": res.user.email};
+      let obj = { fecha: new Date(), "user": res.user.email };
       addDoc(col, obj)
 
       //REDIRIJO EL USUARIO AL HOME TRAS 3 SEGUNDOS
 
       setTimeout(() => {
         this.router.navigate(['/home']);
-      }, 3000);
+      }, 1500);
 
     }).catch((e) => {
       switch (e.code) {
@@ -76,16 +88,25 @@ export class RegistroComponent {
           break;
       }
 
-      Toastify({
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'error', // Utiliza el icono de error
+        title: 'Error',
         text: this.mensajeError,
-        backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
-        duration: 2000
-      }).showToast();
+        showConfirmButton: false,
+        timer: 3000, // Muestra el mensaje por 3 segundos
+        background: '#333', // Fondo oscuro
+        color: '#fff', // Texto blanco
+        iconColor: '#ff5f6d', // Color del icono, un rojo claro
+        customClass: {
+          popup: 'colored-toast'
+        }
+      });
     })
   }
 
   toggleMostrarContrasenia() {
     this.mostrarContrasenia = !this.mostrarContrasenia;
   }
-
 }

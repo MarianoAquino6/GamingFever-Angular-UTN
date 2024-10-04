@@ -10,7 +10,6 @@
             <img [src]="banderaPaisSeleccionado" alt="Bandera pais seleccionado">
         </div>
         <div class="estado">
-            <p>TIEMPO: {{contador}}</p>
             @switch (vidas) {
             @case (3) {
             <p>VIDAS: ❤️❤️❤️</p>
@@ -49,11 +48,6 @@
         </div>
     </div>
 </section>
-
-@if(contador==0 && vidas>0)
-{
-    <ng-container *ngIf="verificarRespuesta('TIMEOUT')"></ng-container>
-}
 
 @if (vidas===0) {
 <div class="overlay">

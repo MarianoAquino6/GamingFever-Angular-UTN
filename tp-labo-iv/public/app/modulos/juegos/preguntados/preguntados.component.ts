@@ -11,7 +11,6 @@ import { Subscription } from 'rxjs';
 export class PreguntadosComponent {
   vidas: number = 3;
   puntaje: number = 0;
-  contador: number = 10;
   intervalo: any;
   paises!: any[];
   subscripcion!: Subscription;
@@ -28,7 +27,6 @@ export class PreguntadosComponent {
 
   ngOnInit() {
     this.obtenerPaises();
-    this.iniciarContador();
   }
 
   ngOnDestroy() {
@@ -36,16 +34,6 @@ export class PreguntadosComponent {
       this.subscripcion.unsubscribe();
     }
     clearInterval(this.intervalo);
-  }
-
-  iniciarContador() {
-    this.intervalo = setInterval(() => {
-      if (this.contador > 0) {
-        this.contador--;
-      } else {
-        clearInterval(this.intervalo); // Detengo el intervalo si llega a 0
-      }
-    }, 1000); // Cada 1 segundo
   }
 
   obtenerPaises() {
@@ -112,10 +100,6 @@ export class PreguntadosComponent {
     if (this.vidas > 0) {
       this.seleccionarAleatoreamentePais();
       this.generarOpciones();
-      this.contador = 10;
-    }
-    else{
-      this.contador = 0;
     }
   }
 
@@ -124,6 +108,5 @@ export class PreguntadosComponent {
     this.puntaje = 0;
     this.seleccionarAleatoreamentePais();
     this.generarOpciones();
-    this.contador = 10;
   }
 }

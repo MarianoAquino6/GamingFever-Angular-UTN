@@ -7,7 +7,7 @@
 <section class="preguntados-main">
     <div class="bandera-estado">
         <div class="bandera">
-            <audio [src]="audioCancionSeleccionada" autoplay></audio>
+            <audio #audioRef [src]="audioCancionSeleccionada" autoplay></audio>
             <img [src]="imagenAlbumCancionSeleccionada" alt="Bandera album cancion seleccionada">
         </div>
         <div class="estado">
@@ -64,4 +64,14 @@
         <button class="btn btn-danger m-1 p-3" (click)="volverAIntentar()">VOLVER A INTENTAR</button>
     </div>
 </div>
+}
+
+@if (juegoterminado) {
+    <div class="overlay">
+        <div class="game-over">
+            <h2>HAS GANADO!</h2>
+            <p>Tu puntaje: {{puntaje}}</p>
+            <button class="btn btn-danger m-1 p-3" (click)="volverAIntentar()">VOLVER A INTENTAR</button>
+        </div>
+    </div>
 }

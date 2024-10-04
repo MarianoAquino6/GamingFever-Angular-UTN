@@ -3,9 +3,8 @@ import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from
 import { addDoc, collection, collectionData, Firestore, where, orderBy, limit, query, doc, setDoc } from '@angular/fire/firestore';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
-import Toastify from 'toastify-js';
-import 'toastify-js/src/toastify.css';
 import { AuthService } from '../../auth/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login-component',
@@ -23,16 +22,14 @@ export class LoginComponentComponent {
 
   @Output() onEnviarUserLogueado = new EventEmitter<string>();
 
-  constructor(public auth: Auth, private router: Router, private firestore: Firestore, private authService: AuthService) 
-  {
+  constructor(public auth: Auth, private router: Router, private firestore: Firestore, private authService: AuthService) {
 
   }
 
   // Boton para autocompletar
-  autocompletar()
-  {
+  autocompletar() {
     this.usernameLogin = "marianaquino@hotmail.com";
-    this.passLogin= "124Fasfdh!";
+    this.passLogin = "124Fasfdh!";
   }
 
   login() {
@@ -45,27 +42,36 @@ export class LoginComponentComponent {
         // Me guardo el usuario logueado
         this.usuarioLogeado = res.user.email;
 
-        // Muestro un cartel de bienvenido
-        Toastify({
-          text: `Bienvenido, ${this.usuarioLogeado}!`,
-          backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-          duration: 1500
-        }).showToast();
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'success',
+          title: 'Bienvenido',
+          text: `¡Hola ${this.usuarioLogeado}!`,
+          showConfirmButton: false,
+          timer: 2000,
+          background: '#333', // Fondo oscuro
+          color: '#fff', // Texto blanco
+          iconColor: '##28a745', // Color del icono, verde en este caso
+          customClass: {
+            popup: 'colored-toast'
+          }
+        });
       }
-      
+
       // Le mando el nombre del usuario al metodo setUsuarioLogueado del AuthService
       this.authService.setUsuarioLogueado(res.user.email);
 
       // Guardo el login del usuario
       let col = collection(this.firestore, 'logins');
-      let obj = { fecha: new Date(), "user": res.user.email};
+      let obj = { fecha: new Date(), "user": res.user.email };
       addDoc(col, obj)
 
       // Redirijo al usuario al home tras 1.5 segundos
       setTimeout(() => {
         this.router.navigate(['/home']);
       }, 1500);
-      
+
       // Si surgen errores los capto
     }).catch((e) => {
       switch (e.code) {
@@ -83,12 +89,22 @@ export class LoginComponentComponent {
           break;
       }
 
-      // Muestro el mensaje de error
-      Toastify({
+      // Mostrar el mensaje de error con SweetAlert2
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'error', // Utiliza el icono de error
+        title: 'Error',
         text: this.mensajeError,
-        backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
-        duration: 2000
-      }).showToast();
+        showConfirmButton: false,
+        timer: 3000, // Muestra el mensaje por 3 segundos
+        background: '#333', // Fondo oscuro
+        color: '#fff', // Texto blanco
+        iconColor: '#ff5f6d', // Color del icono, un rojo claro
+        customClass: {
+          popup: 'colored-toast'
+        }
+      });
     })
   }
 }

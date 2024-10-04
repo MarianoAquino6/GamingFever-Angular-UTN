@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, viewChild } from '@angular/core';
 import { CancionesService } from '../../../servicios/canciones.service';
 import { Subscription } from 'rxjs';
+
 @Component({
   selector: 'app-namethesong',
   standalone: false,
@@ -25,14 +26,21 @@ export class NamethesongComponent {
   tituloCancionSeleccionada!: string;
   audioCancionSeleccionada!: string;
   cancionesSeleccionadas: Set<number> = new Set();
-  constructor(private cancionesService: CancionesService){}
-  ngOnInit()
-  {
+  @ViewChild('audioRef') audioElement!: ElementRef<HTMLAudioElement>;
+  juegoterminado: boolean = false;
+
+  constructor(private cancionesService: CancionesService) { }
+
+  ngOnInit() {
     this.obtenerCanciones();
     this.iniciarContador();
   }
-  obtenerCanciones()
-  {
+
+  ngAfterViewInit() {
+    this.audioElement.nativeElement.volume = 0.4;
+  }
+
+  obtenerCanciones() {
     // Como el método getMetallicaSong me devuelve un observable, me tengo que suscribir a este
     this.subscripcion = this.cancionesService.getMetallicaSong().subscribe(
       // Aprovecho para guardar las canciones que obtuve en la variable 'cancionesMetallica'
@@ -47,12 +55,14 @@ export class NamethesongComponent {
       }
     );
   }
+
   ngOnDestroy() {
     if (this.subscripcion) {
       this.subscripcion.unsubscribe();
     }
     clearInterval(this.intervalo);
   }
+
   iniciarContador() {
     this.intervalo = setInterval(() => {
       if (this.contador > 0) {
@@ -62,12 +72,14 @@ export class NamethesongComponent {
       }
     }, 1000); // Cada 1 segundo
   }
+
   seleccionarAleatoreamenteCancion() {
     if (this.cancionesSeleccionadas.size >= this.cancionesMetallica.length) {
       this.cancionesSeleccionadas.clear(); // Reinicia las seleccionadas
-      this.puntaje = 0; // O reinicia el puntaje si lo deseas
-      this.vidas = 3; // Reinicia las vidas
+      this.juegoterminado =  true;
+      this.audioElement.nativeElement.pause();
     }
+
     let indiceAleatorio: number;
     do {
       indiceAleatorio = Math.floor(Math.random() * this.cancionesMetallica.length);
@@ -79,14 +91,15 @@ export class NamethesongComponent {
     this.audioCancionSeleccionada = this.cancionesMetallica[this.posicionCancionSeleccionada].audio;
     console.log("La canción elegida es " + this.cancionesMetallica[this.posicionCancionSeleccionada].titulo);
   }
+
   generarOpciones() {
     const listaTresIndicesAleatorios = new Set<number>();
     while (listaTresIndicesAleatorios.size < 3) {
       const indiceAleatorio = Math.floor(Math.random() * this.cancionesMetallica.length);
       // Evito que el índice seleccionado ya esté en la lista o que sea la canción correcta
-    if (indiceAleatorio !== this.posicionCancionSeleccionada && !listaTresIndicesAleatorios.has(indiceAleatorio)) {
-      listaTresIndicesAleatorios.add(indiceAleatorio);
-    }
+      if (indiceAleatorio !== this.posicionCancionSeleccionada && !listaTresIndicesAleatorios.has(indiceAleatorio)) {
+        listaTresIndicesAleatorios.add(indiceAleatorio);
+      }
     }
     const indicesArray = Array.from(listaTresIndicesAleatorios);
     indicesArray.push(this.posicionCancionSeleccionada);
@@ -96,6 +109,7 @@ export class NamethesongComponent {
     this.terceraOpcion = this.cancionesMetallica[indicesArray[2]].titulo;
     this.cuartaOpcion = this.cancionesMetallica[indicesArray[3]].titulo;
   }
+
   // Método para mezclar un array (Fisher-Yates Shuffle)
   shuffleArray(array: number[]) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -103,25 +117,27 @@ export class NamethesongComponent {
       [array[i], array[j]] = [array[j], array[i]];
     }
   }
+
   verificarRespuesta(eleccion: string) {
     console.log("La respuesta es: " + eleccion + " y la correcta es " + this.cancionesMetallica[this.posicionCancionSeleccionada].titulo)
-    
+
     if (eleccion == this.cancionesMetallica[this.posicionCancionSeleccionada].titulo) {
       this.puntaje++;
     }
     else {
       this.vidas--;
     }
-    if (this.vidas > 0)
-    {
+    if (this.vidas > 0) {
       this.seleccionarAleatoreamenteCancion();
       this.generarOpciones();
       this.contador = 10;
     }
-    else{
+    else {
       this.contador = 0;
+      this.audioElement.nativeElement.pause();
     }
   }
+
   volverAIntentar() {
     this.vidas = 3;
     this.puntaje = 0;
