@@ -30,18 +30,15 @@ export class CancionesService {
           Authorization: `Bearer ${token}`
         });
   
-        // Hacemos una única llamada con el límite de 50 canciones
         return this.http.get<any>(`https://api.spotify.com/v1/search?q=metallica&type=track&limit=50`, { headers }).pipe(
           map(response => {
-            // Filtra las canciones para incluir solo las de los álbumes específicos
             const filteredTracks = response.tracks.items.filter((track: any) => 
               this.albums.includes(track.album.name)
             );
-            // Retorna los temas filtrados
             return filteredTracks.map((track: any) => ({
               titulo: track.name,
-              album: track.album.images[0]?.url, // Imagen del álbum
-              audio: track.preview_url // Vista previa del audio
+              album: track.album.images[0]?.url, 
+              audio: track.preview_url
             }));
           })
         );

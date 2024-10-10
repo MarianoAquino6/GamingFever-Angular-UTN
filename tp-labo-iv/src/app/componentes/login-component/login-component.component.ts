@@ -26,7 +26,6 @@ export class LoginComponentComponent {
 
   }
 
-  // Boton para autocompletar
   autocompletar() {
     this.usernameLogin = "marianaquino@hotmail.com";
     this.passLogin = "124Fasfdh!";
@@ -34,12 +33,9 @@ export class LoginComponentComponent {
 
   login() {
     signInWithEmailAndPassword(this.auth, this.usernameLogin, this.passLogin).then((res) => {
-      //Hasta acá no hay errores
       this.mensajeError = "";
 
-      // Si el email que ingreso no esta vacio
       if (res.user.email !== null) {
-        // Me guardo el usuario logueado
         this.usuarioLogeado = res.user.email;
 
         Swal.fire({
@@ -50,29 +46,25 @@ export class LoginComponentComponent {
           text: `¡Hola ${this.usuarioLogeado}!`,
           showConfirmButton: false,
           timer: 2000,
-          background: '#333', // Fondo oscuro
-          color: '#fff', // Texto blanco
-          iconColor: '##28a745', // Color del icono, verde en este caso
+          background: '#333', 
+          color: '#fff',
+          iconColor: '##28a745', 
           customClass: {
             popup: 'colored-toast'
           }
         });
       }
 
-      // Le mando el nombre del usuario al metodo setUsuarioLogueado del AuthService
       this.authService.setUsuarioLogueado(res.user.email);
 
-      // Guardo el login del usuario
       let col = collection(this.firestore, 'logins');
       let obj = { fecha: new Date(), "user": res.user.email };
       addDoc(col, obj)
 
-      // Redirijo al usuario al home tras 1.5 segundos
       setTimeout(() => {
         this.router.navigate(['/home']);
       }, 1500);
 
-      // Si surgen errores los capto
     }).catch((e) => {
       switch (e.code) {
         case "auth/invalid-email":
@@ -89,18 +81,17 @@ export class LoginComponentComponent {
           break;
       }
 
-      // Mostrar el mensaje de error con SweetAlert2
       Swal.fire({
         toast: true,
         position: 'top-end',
-        icon: 'error', // Utiliza el icono de error
+        icon: 'error', 
         title: 'Error',
         text: this.mensajeError,
         showConfirmButton: false,
-        timer: 3000, // Muestra el mensaje por 3 segundos
-        background: '#333', // Fondo oscuro
-        color: '#fff', // Texto blanco
-        iconColor: '#ff5f6d', // Color del icono, un rojo claro
+        timer: 3000,
+        background: '#333', 
+        color: '#fff', 
+        iconColor: '#ff5f6d',
         customClass: {
           popup: 'colored-toast'
         }

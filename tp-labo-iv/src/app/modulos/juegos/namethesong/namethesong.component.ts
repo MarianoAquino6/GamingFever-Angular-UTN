@@ -1,6 +1,15 @@
 import { Component, ElementRef, OnInit, ViewChild, viewChild } from '@angular/core';
 import { CancionesService } from '../../../servicios/canciones.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { addDoc, collection, collectionData, Firestore, orderBy, where, query } from '@angular/fire/firestore';
+import { AuthService } from '../../../auth/auth.service';
+import Swal from 'sweetalert2';
+
+interface Puntaje {
+  usuario: string | null; 
+  puntaje: number;
+  fecha: string;
+}
 
 @Component({
   selector: 'app-namethesong',
@@ -28,12 +37,17 @@ export class NamethesongComponent {
   cancionesSeleccionadas: Set<number> = new Set();
   @ViewChild('audioRef') audioElement!: ElementRef<HTMLAudioElement>;
   juegoterminado: boolean = false;
+  jugador: string | null = null;
+  derrota: boolean = false;
+  sub!: Subscription;
+  topPuntajes: Puntaje[] = [];
 
-  constructor(private cancionesService: CancionesService) { }
+  constructor(private cancionesService: CancionesService, private firestore: Firestore, private auth: AuthService) { }
 
   ngOnInit() {
     this.obtenerCanciones();
     this.iniciarContador();
+    this.auth.usuarioLogueado$.subscribe((usuario) => { this.jugador = usuario })
   }
 
   ngAfterViewInit() {
@@ -76,8 +90,12 @@ export class NamethesongComponent {
   seleccionarAleatoreamenteCancion() {
     if (this.cancionesSeleccionadas.size >= this.cancionesMetallica.length) {
       this.cancionesSeleccionadas.clear(); // Reinicia las seleccionadas
-      this.juegoterminado =  true;
+      this.juegoterminado = true;
       this.audioElement.nativeElement.pause();
+
+      this.guardarPuntaje();
+      this.mostrarMensajePuntajeGuardado();
+      this.obtenerTop5();
     }
 
     let indiceAleatorio: number;
@@ -126,6 +144,7 @@ export class NamethesongComponent {
     }
     else {
       this.vidas--;
+      this.verificarDerrota();
     }
     if (this.vidas > 0) {
       this.seleccionarAleatoreamenteCancion();
@@ -136,11 +155,95 @@ export class NamethesongComponent {
       this.contador = 0;
       this.audioElement.nativeElement.pause();
     }
+
+    if (this.derrota) {
+      this.guardarPuntaje();
+      this.mostrarMensajePuntajeGuardado();
+      this.obtenerTop5();
+    }
+  }
+
+  verificarDerrota() {
+    if (this.vidas === 0) {
+      this.derrota = true;
+    }
+  }
+
+  guardarPuntaje() {
+    // Referencio la colección
+    let col = collection(this.firestore, 'puntajes');
+    // Referencio el futuro objeto que agregaré a la colección
+    let obj = {
+      fecha: new Date(),
+      "user": this.jugador,
+      "juego": "Name the Metallica Song",
+      "puntaje": this.puntaje
+    };
+    // Agrego el objeto a la colección
+    addDoc(col, obj)
+  }
+
+  mostrarMensajePuntajeGuardado() {
+    Swal.fire({
+      toast: true,
+      position: 'top-end',
+      icon: 'success',
+      title: 'Exitoso',
+      text: `Su puntaje ha sido guardado!`,
+      showConfirmButton: false,
+      timer: 2500,
+      background: '#333',
+      color: '#fff', 
+      iconColor: '##28a745', 
+      customClass: {
+        popup: 'colored-toast'
+      }
+    });
+  }
+
+  obtenerTop5() {
+    // Referencio la colección
+    let col = collection(this.firestore, 'puntajes');
+
+    // Armo la query sin el límite
+    const filteredQuery = query(
+      col,
+      where('juego', '==', 'Name the Metallica Song'),
+      orderBy('puntaje', 'desc')
+    );
+
+    // Creo un observable para la respuesta de la query
+    const observable: Observable<any[]> = collectionData(filteredQuery, { idField: 'id' });
+
+    // Me suscribo al observable
+    this.sub = observable.subscribe((respuesta: any[]) => {
+      // Filtrar para obtener solo los primeros 10 elementos
+      this.topPuntajes = respuesta.slice(0, 5).map(puntaje => ({
+        usuario: puntaje.user,
+        puntaje: puntaje.puntaje,
+        fecha: this.formatFecha(puntaje.fecha.toDate())
+      }));
+    });
+
+    console.log(this.topPuntajes);
+  }
+
+  formatFecha(fecha: Date): string {
+    const options: Intl.DateTimeFormatOptions = {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    };
+    return fecha.toLocaleString('es-ES', options);
   }
 
   volverAIntentar() {
     this.vidas = 3;
     this.puntaje = 0;
+    this.derrota = false;
     this.seleccionarAleatoreamenteCancion();
     this.generarOpciones();
     this.contador = 10;

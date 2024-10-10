@@ -53,6 +53,22 @@
 <div class="overlay">
     <div class="game-over">
         <h2>GAME OVER</h2>
+
+        <h3>TOP 5 SCORES</h3>
+
+        <table>
+            <tr>
+                <th>Fecha</th>
+                <th>Usuario</th>
+                <th>Puntaje</th>
+            </tr>
+            <tr *ngFor="let puntaje of topPuntajes">
+                <td>{{ puntaje.fecha }}</td>
+                <td>{{ puntaje.usuario }}</td>
+                <td>{{ puntaje.puntaje }}</td>
+            </tr>
+        </table>
+
         <p>Tu puntaje: {{puntaje}}</p>
         <button class="btn btn-danger m-1 p-3" (click)="volverAIntentar()">VOLVER A INTENTAR</button>
     </div>

@@ -23,12 +23,10 @@ export class ChatComponent {
 
   constructor(private firestore: Firestore, private authService: AuthService) { }
 
-  // Función que se ejecuta después de que la vista se renderiza
   ngAfterViewChecked() {
     this.scrollToBottom();
   }
 
-  // Desplaza el scroll al final del contenedor de mensajes
   scrollToBottom(): void {
     try {
       this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
@@ -39,13 +37,11 @@ export class ChatComponent {
     this.isChatOpen = !this.isChatOpen;
 
     if (this.isChatOpen) {
-      this.scrollToBottom(); // Bajamos al abrir el chat
+      this.scrollToBottom();
     }
   }
 
-  // Cuando el componente se inicializa:
   ngOnInit() {
-    // Me suscribo al observable que setee en AuthService, para asignar el valor correspondiente a 'usuarioLogueadoGeneral'
     this.authService.usuarioLogueado$.subscribe((usuario) => {
       this.usuarioLogueado = usuario;
     });
@@ -65,15 +61,12 @@ export class ChatComponent {
     const observable = collectionData(filteredQuery);
 
     this.sub = observable.subscribe((respuesta: any) => {
-      //Actualizamos nuestro diccionario
-      // this.messages = respuesta;
-
       this.messages = respuesta.map((msg: any) => ({
         ...msg,
-        fecha: msg.fecha instanceof Date ? msg.fecha : new Date(msg.fecha.seconds * 1000) // Ajusta esto si 'fecha' viene como Timestamp
+        fecha: msg.fecha instanceof Date ? msg.fecha : new Date(msg.fecha.seconds * 1000) 
       }));
 
-      this.scrollToBottom(); // Bajamos cada vez que llegan nuevos mensajes
+      this.scrollToBottom(); 
     })
 
   }
@@ -83,10 +76,9 @@ export class ChatComponent {
       let col = collection(this.firestore, 'chat');
       let obj = { "fecha": new Date(), "mensaje": this.message, "user": this.usuarioLogueado };
       addDoc(col, obj).then(() => {
-        // Limpio el input después de enviar el mensaje
         this.message = '';
         setTimeout(() => {
-          this.scrollToBottom(); // Bajamos después de enviar un mensaje
+          this.scrollToBottom(); 
         }, 100);
       });
     }

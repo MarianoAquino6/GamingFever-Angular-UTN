@@ -31,10 +31,8 @@ export class RegistroComponent {
 
   registrarUsuario() {
     createUserWithEmailAndPassword(this.auth, this.nuevoUsername, this.nuevaPass).then((res) => {
-      //NO HAY ERROR
       this.mensajeError = "";
 
-      //MUESTRO UN CARTEL DE BIENVENIDO Y ME GUARDO EL USUARIO LOGUEADO
       if (res.user.email !== null) {
         this.usuarioLogeado = res.user.email;
 
@@ -46,24 +44,20 @@ export class RegistroComponent {
           text: `¡Hola ${this.usuarioLogeado}!`,
           showConfirmButton: false,
           timer: 2000,
-          background: '#333', // Fondo oscuro
-          color: '#fff', // Texto blanco
-          iconColor: '##28a745', // Color del icono, verde en este caso
+          background: '#333', 
+          color: '#fff',
+          iconColor: '##28a745', 
           customClass: {
             popup: 'colored-toast'
           }
         });
       }
 
-      // Le mando el nombre del usuario al metodo setUsuarioLogueado del AuthService
       this.authService.setUsuarioLogueado(res.user.email);
 
-      //GUARDO EL LOGIN DEL USUARIO EN UN LOGGER
       let col = collection(this.firestore, 'logins');
       let obj = { fecha: new Date(), "user": res.user.email };
       addDoc(col, obj)
-
-      //REDIRIJO EL USUARIO AL HOME TRAS 3 SEGUNDOS
 
       setTimeout(() => {
         this.router.navigate(['/home']);
@@ -91,14 +85,14 @@ export class RegistroComponent {
       Swal.fire({
         toast: true,
         position: 'top-end',
-        icon: 'error', // Utiliza el icono de error
+        icon: 'error', 
         title: 'Error',
         text: this.mensajeError,
         showConfirmButton: false,
-        timer: 3000, // Muestra el mensaje por 3 segundos
-        background: '#333', // Fondo oscuro
-        color: '#fff', // Texto blanco
-        iconColor: '#ff5f6d', // Color del icono, un rojo claro
+        timer: 3000, 
+        background: '#333', 
+        color: '#fff', 
+        iconColor: '#ff5f6d',
         customClass: {
           popup: 'colored-toast'
         }

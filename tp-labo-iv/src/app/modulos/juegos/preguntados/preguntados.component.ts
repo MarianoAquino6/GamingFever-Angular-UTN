@@ -1,6 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { BanderasService } from '../../../servicios/banderas.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { addDoc, collection, collectionData, Firestore, orderBy, where, query } from '@angular/fire/firestore';
+import { AuthService } from '../../../auth/auth.service';
+import Swal from 'sweetalert2';
+
+interface Puntaje {
+  usuario: string | null;
+  puntaje: number;
+  fecha: string;
+}
 
 @Component({
   selector: 'app-preguntados',
@@ -22,11 +31,16 @@ export class PreguntadosComponent {
   terceraOpcion!: string;
   cuartaOpcion!: string;
   banderaPaisSeleccionado!: string;
+  jugador: string | null = null;
+  derrota: boolean = false;
+  sub!: Subscription;
+  topPuntajes: Puntaje[] = [];
 
-  constructor(private banderasService: BanderasService) { }
+  constructor(private banderasService: BanderasService, private firestore: Firestore, private auth: AuthService) { }
 
   ngOnInit() {
     this.obtenerPaises();
+    this.auth.usuarioLogueado$.subscribe((usuario) => {this.jugador = usuario})
   }
 
   ngOnDestroy() {
@@ -95,17 +109,103 @@ export class PreguntadosComponent {
     }
     else {
       this.vidas--;
+      this.verificarDerrota();
     }
 
     if (this.vidas > 0) {
       this.seleccionarAleatoreamentePais();
       this.generarOpciones();
     }
+
+    if (this.derrota)
+    {
+      this.guardarPuntaje();
+      this.mostrarMensajePuntajeGuardado();
+      this.obtenerTop5();
+    }
+  }
+
+  verificarDerrota() {
+    if (this.vidas === 0) {
+      this.derrota = true;
+    }
+  }
+
+  guardarPuntaje()
+  {
+    // Referencio la colección
+    let col = collection(this.firestore, 'puntajes');
+    // Referencio el futuro objeto que agregaré a la colección
+    let obj = { 
+      fecha: new Date(), 
+      "user": this.jugador,
+      "juego": "Preguntados",
+      "puntaje": this.puntaje
+    };
+    // Agrego el objeto a la colección
+    addDoc(col, obj)
+  }
+
+  obtenerTop5() {
+    // Referencio la colección
+    let col = collection(this.firestore, 'puntajes');
+
+    // Armo la query sin el límite
+    const filteredQuery = query(
+      col,
+      where('juego', '==', 'Preguntados'),
+      orderBy('puntaje', 'desc')
+    );
+
+    // Creo un observable para la respuesta de la query
+    const observable: Observable<any[]> = collectionData(filteredQuery, { idField: 'id' });
+
+    // Me suscribo al observable
+    this.sub = observable.subscribe((respuesta: any[]) => {
+      // Filtrar para obtener solo los primeros 10 elementos
+      this.topPuntajes = respuesta.slice(0, 5).map(puntaje => ({
+        usuario: puntaje.user,
+        puntaje: puntaje.puntaje,
+        fecha: this.formatFecha(puntaje.fecha.toDate())
+      }));
+    });
+  }
+
+  formatFecha(fecha: Date): string {
+    const options: Intl.DateTimeFormatOptions = {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    };
+    return fecha.toLocaleString('es-ES', options);
+  }
+
+  mostrarMensajePuntajeGuardado()
+  {
+    Swal.fire({
+      toast: true,
+      position: 'top-end',
+      icon: 'success',
+      title: 'Exitoso',
+      text: `Su puntaje ha sido guardado!`,
+      showConfirmButton: false,
+      timer: 2500,
+      background: '#333', 
+      color: '#fff', 
+      iconColor: '##28a745',
+      customClass: {
+        popup: 'colored-toast'
+      }
+    });
   }
 
   volverAIntentar() {
     this.vidas = 3;
     this.puntaje = 0;
+    this.derrota = false;
     this.seleccionarAleatoreamentePais();
     this.generarOpciones();
   }

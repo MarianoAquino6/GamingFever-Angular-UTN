@@ -1,0 +1,122 @@
+<section>
+    <div class="banner">
+        <h2>ENCUESTA</h2>
+    </div>
+</section>
+
+<section class="encuesta-imagen">
+    <div class="encuesta">
+        <h3>Me interesa tu opinion!</h3>
+
+        <form [formGroup]="encuestaForm" (ngSubmit)="onSubmit()">
+            <div class="dupla-form">
+
+                <!-- Nombre y Apellido -->
+                <div class="form-group">
+                    <label for="nombreApellido">Nombre y Apellido:</label>
+                    <input type="text" id="nombreApellido" formControlName="nombreApellido"
+                        placeholder="Ingresa tu nombre y apellido" />
+                    <div *ngIf="nombreApellido?.hasError('required') && nombreApellido?.touched">
+                        <small class="error">Este campo es obligatorio.</small>
+                    </div>
+                    <div *ngIf="nombreApellido?.hasError('pattern') && nombreApellido?.touched">
+                        <small class="error">Solo se permiten letras y espacios.</small>
+                    </div>
+                </div>
+
+                <!-- Edad -->
+                <div class="form-group" style="margin-left: 40px;">
+                    <label for="edad">Edad:</label>
+                    <input type="number" id="edad" formControlName="edad" placeholder="Ingresa tu edad (De 18 a 99)" />
+                    <div *ngIf="edad?.hasError('required') && edad?.touched">
+                        <small class="error">Este campo es obligatorio.</small>
+                    </div>
+                    <div *ngIf="edad?.hasError('min') && edad?.touched">
+                        <small class="error">Debes tener mínimo {{ edad?.getError('min').min }} años.</small>
+                    </div>
+                    <div *ngIf="edad?.hasError('max') && edad?.touched">
+                        <small class="error">Debes tener máximo {{ edad?.getError('max').max }} años.</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dupla-form">
+                <!-- Número de teléfono -->
+                <div class="form-group">
+                    <label for="telefono">Número de Teléfono:</label>
+                    <input type="text" id="telefono" formControlName="telefono" placeholder="Ingresa tu teléfono (Max 10 caracteres)"
+                        maxlength="10" />
+                    <div *ngIf="telefono?.hasError('required') && telefono?.touched">
+                        <small class="error">Este campo es obligatorio.</small>
+                    </div>
+                    <div *ngIf="telefono?.hasError('pattern') && telefono?.touched">
+                        <small class="error">Este campo debe contener solo números.</small>
+                    </div>
+                    <div *ngIf="telefono?.hasError('maxlength') && telefono?.touched">
+                        <small class="error">Solo se permite hasta {{ telefono?.getError('maxlength').requiredLength }}
+                            caracteres.</small>
+                    </div>
+                </div>
+
+                <!-- Pregunta 1: Textbox -->
+                <div class="form-group" style="margin-left: 40px;">
+                    <label for="mejora">Ingresa una sugerencia de mejora:</label>
+                    <input type="text" id="mejora" formControlName="mejora" placeholder="Ingresa tu sugerencia" />
+                    <div *ngIf="mejora?.hasError('required') && mejora?.touched">
+                        <small class="error">Este campo es obligatorio.</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pregunta 2: Radio Buttons -->
+            <div class="form-group">
+                <label>¿Cuál juego te gustó más?</label>
+                <div class="radio-group">
+                    <label><input type="radio" formControlName="juegoFavorito" value="ahorcado" /> Ahorcado</label>
+                    <label><input type="radio" formControlName="juegoFavorito" value="mayor-menor" /> Mayor o Menor</label>
+                    <label><input type="radio" formControlName="juegoFavorito" value="preguntados" /> Preguntados</label>
+                    <label><input type="radio" formControlName="juegoFavorito" value="name-the-metallica-song" /> Name the Metallica Song</label>
+                </div>
+                <div *ngIf="juegoFavorito?.hasError('required') && juegoFavorito?.touched">
+                    <small class="error">Este campo es obligatorio.</small>
+                </div>
+            </div>
+
+            <!-- Pregunta 3: Checkbox (limitando a solo una selección) -->
+            <div class="form-group">
+                <label>¿Qué tan difíciles te parecieron los juegos?</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" formControlName="muyDificil" (change)="onCheckboxChange('muyDificil')" /> Muy difíciles</label>
+                    <label><input type="checkbox" formControlName="intermedio" (change)="onCheckboxChange('intermedio')" /> Intermedio</label>
+                    <label><input type="checkbox" formControlName="facil" (change)="onCheckboxChange('facil')" /> Fáciles</label>
+                </div>
+                <div *ngIf="encuestaForm.hasError('requerido') && encuestaForm.touched">
+                    <small class="error">{{ encuestaForm.getError('requerido') }}</small>
+                </div>
+            </div>
+
+            <!-- Pregunta 4: Dropdown -->
+            <div class="form-group">
+                <label for="musica-favorita">¿Qué tipo de música prefieres?</label>
+                <select id="musica-favorita" formControlName="musicaFavorita">
+                    <option value="metal">Metal</option>
+                    <option value="rock">Rock</option>
+                    <option value="jazz">Jazz</option>
+                    <option value="pop">Pop</option>
+                </select>
+                <div *ngIf="musicaFavorita?.hasError('required') && musicaFavorita?.touched">
+                    <small class="error">Este campo es obligatorio.</small>
+                </div>
+            </div>
+
+            <!-- Botón de envío -->
+            <button type="submit" [disabled]="encuestaForm.invalid">
+                Enviar
+            </button>
+        </form>
+    </div>
+
+    <div class="imagen">
+        <img src="assets/img/terminator.jpg" alt="terminator login">
+    </div>
+</section>

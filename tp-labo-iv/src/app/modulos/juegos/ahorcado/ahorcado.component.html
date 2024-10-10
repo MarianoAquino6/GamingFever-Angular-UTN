@@ -79,9 +79,25 @@
     </div>
 </section>
 
-<div class="overlay" *ngIf="cantidadErrores === 6">
+<div class="overlay" *ngIf="derrota">
     <div class="game-over">
         <h2>GAME OVER</h2>
+
+        <h3>TOP 5 SCORES</h3>
+
+        <table>
+            <tr>
+                <th>Fecha</th>
+                <th>Usuario</th>
+                <th>Puntaje</th>
+            </tr>
+            <tr *ngFor="let puntaje of topPuntajes">
+                <td>{{ puntaje.fecha }}</td>
+                <td>{{ puntaje.usuario }}</td>
+                <td>{{ puntaje.puntaje }}</td>
+            </tr>
+        </table>
+
         <p>Tu puntaje: {{puntaje}}</p>
         <button class="btn btn-danger m-1 p-3" (click)="volverAIntentar(true)">VOLVER A INTENTAR</button>
     </div>
@@ -90,7 +106,8 @@
 <div class="overlay" *ngIf="victoria">
     <div class="game-over">
         <h2>HAS GANADO!</h2>
-        <p>Tu puntaje: {{puntaje}}</p>
+        <p>Tu puntaje hasta el momento: {{puntaje}}</p>
         <button class="btn btn-danger m-1 p-3" (click)="volverAIntentar(false)">SEGUIR JUGANDO</button>
+        <button class="btn btn-danger m-1 p-3" (click)="guardarPuntajeYSalir()">GUARDAR PUNTAJE Y SALIR</button>
     </div>
 </div>
